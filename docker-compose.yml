@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  app:
+    container_name: donations
+    restart: always
+    build: ./
+    ports:
+      - "80:3000"
+    volumes:
+      - .:/app
+    links:
+      - mongo
+    command: npm run start
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - "27017:27017"
