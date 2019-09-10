@@ -5,7 +5,6 @@ import MongoHelper from './Utils/MongoHelper'
 import * as connectMongo from 'connect-mongo';
 import * as ExpressSession from 'express-session'
 import * as cookieParser from 'cookie-parser'
-import * as mongoose from 'mongoose'
 import * as passport from 'passport'
 const cookieSession = require('cookie-session')
 
@@ -23,38 +22,34 @@ class App {
 
     private config(): void{
         this.connectToDB().then(() => {
-            try{
-                this.app.use(express.static('public'));
-                
-                // support application/json type post data
-                this.app.use(bodyParser.json());
-                //support application/x-www-form-urlencoded post data
-                this.app.use(bodyParser.urlencoded({ extended: false }));
+            this.app.use(express.static('public'));
+            
+            // support application/json type post data
+            this.app.use(bodyParser.json());
+            //support application/x-www-form-urlencoded post data
+            this.app.use(bodyParser.urlencoded({ extended: false }));
 
-                this.app.use(cookieParser())
-                this.app.use(cookieSession({
-                    name: 'session',
-                    keys: ['session1', 'session2']
-                }))
-                
-                const MongoStore = connectMongo(ExpressSession);
+            this.app.use(cookieParser())
+            this.app.use(cookieSession({
+                name: 'session',
+                keys: ['session1', 'session2']
+            }))
+            
+            const MongoStore = connectMongo(ExpressSession);
 
-                this.app.use(ExpressSession({
-                    secret: 'donations',
-                    resave: true,
-                    saveUninitialized: true,
-                    unset: 'destroy',
-                    cookie: { secure: true,
-                        maxAge:  6*60*60*1000 },
-                    store: new MongoStore({ mongooseConnection: this.mongoHelper.getDB() })
-                }));
-                this.app.use(passport.initialize());
-                this.app.use(passport.session());
+            this.app.use(ExpressSession({
+                secret: 'donations',
+                resave: true,
+                saveUninitialized: true,
+                unset: 'destroy',
+                cookie: { secure: true,
+                    maxAge:  6*60*60*1000 },
+                store: new MongoStore({ mongooseConnection: this.mongoHelper.getDB() })
+            }));
+            this.app.use(passport.initialize());
+            this.app.use(passport.session());
 
-                this.baseRoutes.routes(this.app)
-            }catch(e){
-                console.log(e)
-            }
+            this.baseRoutes.routes(this.app)
         });
     }
 
