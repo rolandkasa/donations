@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-export interface ContactInterface{
+interface ContactInterface{
     firstName: String,
     lastName: String,
     email: String,
@@ -11,7 +11,7 @@ export interface ContactInterface{
     created_date: Date
 }
 
-export const ContactSchema = new Schema({
+const ContactSchema = new Schema({
     firstName: {
         type: String,
         required: 'Enter a first name'
@@ -50,5 +50,5 @@ export const ContactSchema = new Schema({
     }
 });
 
-const mongooseModel = mongoose.model<ContactInterface>('Contact', ContactSchema)
-export default mongooseModel
+const Contact = mongoose.model<ContactInterface>('Contact', ContactSchema)
+export default Contact
