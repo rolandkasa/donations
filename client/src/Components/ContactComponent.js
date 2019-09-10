@@ -15,6 +15,7 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import ACTIONS from "../actions/contact_actions";
 import { connect } from "react-redux";
+import { stat } from "fs";
 
 const styles = theme => ({
   root: {
@@ -30,7 +31,11 @@ const styles = theme => ({
 });
 
 class Contact extends Component {
-  state = {};
+  state = {
+      contact: {
+
+      }
+  };
 
   generate = () => {
     return this.props.contacts.map(contact => (
@@ -51,21 +56,21 @@ class Contact extends Component {
 
 
   handleSubmit = event => {
-    this.setState({ contact: "" });
     if (this.state.contact !== "") {
       // add the item to the store
       this.props.createItem(this.state.contact);
     }
+    this.setState({ contact: "" });
     event.preventDefault();
   };
 
   handleDelete = event => {
     this.props.deleteItem(event.target.value);
   };
-  handleChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
+  handleChange = (event,prop) => {
+    let contact = this.state.contact;
+    contact[event.target.name] = event.target.value
+    this.setState(...this.state, contact);
   };
 
   render() {
@@ -75,20 +80,42 @@ class Contact extends Component {
       <div>
         <div>
           <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-            <h3>New Contact</h3>
+            <h3>Donation Contacts</h3>
             <FormControl>
               <TextField
                 label="Email"
                 id="margin-dense"
-                value={this.state.contact}
+                value={this.state.contact.email}
                 className={classes.textField}
                 margin="dense"
-                name="item"
+                name="email"
                 onChange={this.handleChange}
               />
             </FormControl>
             <FormControl>
-              <Button>Add</Button>
+              <TextField
+                label="Name"
+                id="margin-dense"
+                value={this.state.contact.name}
+                className={classes.textField}
+                margin="dense"
+                name="name"
+                onChange={this.handleChange}
+              />
+            </FormControl>
+            <FormControl>
+              <TextField
+                label="Phone"
+                id="margin-dense"
+                value={this.state.contact.phone}
+                className={classes.textField}
+                margin="dense"
+                name="phone"
+                onChange={this.handleChange}
+              />
+            </FormControl>
+            <FormControl>
+              <Button onClick={this.handleSubmit}>Add</Button>
             </FormControl>
           </form>
         </div>
