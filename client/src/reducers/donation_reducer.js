@@ -1,23 +1,22 @@
-import ACTIONS from "../actions/contact_actions";
+import ACTIONS from "../actions/donation_actions";
 import _ from "lodash";
 
 const defaultState = {
-  contacts: []
+  donations: []
 };
 
-const contactReducer = (state = defaultState, action) => {
+const donationReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case ACTIONS.Types.CREATE_ITEM: {
-      let contact = action.payload.payload;
-      let newContact = { id: state.contacts.length + 1, description: contact };
+    case ACTIONS.Types.CREATE_DONATION: {
+      let donation = action.payload.payload;
       let newState = _.cloneDeep(state);
-      newState.contacts.push(newContact);
+      newState.donations.push(donation);
       return newState;
     }
 
-    case ACTIONS.Types.GET_CONTACTS : {
+    case ACTIONS.Types.LIST_DONATIONS : {
       let newState = _.cloneDeep(state)
-      newState.contacts = action.payload.payload
+      newState.donations = action.payload.payload
       return newState
     }
 
@@ -33,4 +32,4 @@ const contactReducer = (state = defaultState, action) => {
   }
 };
 
-export default contactReducer;
+export default donationReducer;
