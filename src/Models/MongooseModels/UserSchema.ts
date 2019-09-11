@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-interface UserInterface{
+export interface UserInterface{
     username: String,
     email: String,
     password: string,
@@ -34,6 +34,7 @@ const UserSchema = new Schema({
     },
     toJSON: {
       transform: function (doc, ret) {
+        delete ret.password
         delete ret.__V;
       }
     }
