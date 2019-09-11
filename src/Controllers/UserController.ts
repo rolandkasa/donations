@@ -55,4 +55,9 @@ export class UserController{
             });
         })(req, res, next);
     };
+
+    public async logout (req: RequestInterface, res: Response,) : Promise<Response>{
+        await req.logout()
+        return res.send(FormatResponse.transform("Successfull logout!",200))
+    }
 }
