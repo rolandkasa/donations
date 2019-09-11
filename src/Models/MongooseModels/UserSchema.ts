@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 export interface UserInterface{
+    _id: mongoose.Schema.Types.ObjectId,
     username: String,
     email: String,
     password: string,
