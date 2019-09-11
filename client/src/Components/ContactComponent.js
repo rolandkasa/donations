@@ -5,7 +5,6 @@ import {
   List,
   ListItem,
   ListItemSecondaryAction,
-  ListItemText,
   IconButton,
   Grid,
   TextField,
@@ -15,7 +14,6 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import ACTIONS from "../actions/contact_actions";
 import { connect } from "react-redux";
-import { stat } from "fs";
 
 const styles = theme => ({
   root: {
@@ -23,7 +21,18 @@ const styles = theme => ({
     maxWidth: 752
   },
   demo: {
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
+    float: "right",
+    display: "inline-box",
+    marginRight: "100px",
+    width: "40%"
+  },
+  form:{
+    display: "inline-box",
+    float: "left",
+    margin: "20px 20px 0px 20px",
+    marginLeft: "100px",
+    width: "40%"
   },
   title: {
     margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`
@@ -34,13 +43,18 @@ class Contact extends Component {
   state = {
       contact: {
 
-      }
+      },
+      isLoading: true
   };
 
   generate = () => {
-    return this.props.contacts.map(contact => (
+    return this.props.contacts ?  this.props.contacts.map(contact => (
       <ListItem key={contact.id}>
-        <ListItemText primary={contact.description} />
+        <div>
+          Name: {contact.firstName} {contact.lastName}<br/>
+          Company: {contact.company}<br/>
+          Phone: {contact.phone}<br/>
+        </div>
         <ListItemSecondaryAction>
           <IconButton
             aria-label="Delete"
@@ -51,8 +65,13 @@ class Contact extends Component {
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
-    ));
+    )): ""
   };
+
+  componentDidMount(){
+    this.props.getAll();
+    this.setState({isLoading: false})
+  }
 
 
   handleSubmit = event => {
@@ -76,11 +95,11 @@ class Contact extends Component {
   render() {
     const { classes } = this.props;
 
-    return (
+    return (this.state.isLoading ? "Loading":  
       <div>
-        <div>
+        <div className={classes.form}>
           <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-            <h3>Donation Contacts</h3>
+            <h3>Contacts</h3>
             <FormControl>
               <TextField
                 label="Email"
@@ -119,9 +138,9 @@ class Contact extends Component {
             </FormControl>
           </form>
         </div>
-        <div>
+        <div className={classes.demo}>
           <Grid item container justify="space-evenly" alignItems="center">
-            <div className={classes.demo}>
+            <div>
               <List dense={false}>{this.generate()}</List>
             </div>
           </Grid>
@@ -132,12 +151,13 @@ class Contact extends Component {
 }
 
 const mapStateToProps = state => ({
-    contacts: state.contacts
+    contacts: state.contactReducer.contacts
   });
   
   const mapDispatchToProps = dispatch => ({
     createItem: item => dispatch(ACTIONS.createItem(item)),
-    deleteItem: id => dispatch(ACTIONS.deleteItem(id))
+    deleteItem: id => dispatch(ACTIONS.deleteItem(id)),
+    getAll: () => dispatch(ACTIONS.getAll())
   });
   
   export default connect(

@@ -2,10 +2,11 @@ import { createStore, applyMiddleware } from "redux";
 
 // Logger with default options
 import logger from "redux-logger";
+import thunk from 'redux-thunk';
 
-import reducer from "./reducers/contact_reducer";
+import reducer from "./reducers/index";
 
 export default function configureStore(initialState) {
-  const store = createStore(reducer, initialState, applyMiddleware(logger));
+  const store = createStore(reducer, initialState, applyMiddleware(logger,thunk));
   return store;
 }

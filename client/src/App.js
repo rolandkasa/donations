@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Contact from "./Components/ContactComponent";
+import Donation from './Components/DonationComponent'
 import { Provider as ReduxProvider } from "react-redux";
 import configureStore from "./store";
 
@@ -14,9 +15,13 @@ class App extends Component {
         <div className="App">
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">ToDo Redux app</h1>
+            <h1 className="App-title">Donations</h1>
           </header>
-          <Contact />
+          <Donation/>
+          <footer className="bottom">
+            <hr></hr>
+            <Contact />
+          </footer>
         </div>
       </ReduxProvider>
     );
