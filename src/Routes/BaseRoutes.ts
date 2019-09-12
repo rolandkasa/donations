@@ -1,10 +1,14 @@
 //General imports
-import {Request, Response} from "express";
+import {Request, Response, Application} from "express";
 import FormatResponse from "../Utils/FormatResponse";
 import {ContactController} from '../Controllers/ContactController'
 import { UserController } from "../Controllers/UserController";
 import { DonationsController } from "../Controllers/DonationsController";
 import {AuthorizationChecker, AuthorizationCheckerInterface} from '../Middlewares/AuthorizationChecker'
+import Validator from '../Middlewares/Validator'
+
+//validators
+import {UserValidator} from '../Models/ValidatorModels/UserValidator'
 
 //Models
 import Contact from '../Models/MongooseModels/ContactSchema'
@@ -19,8 +23,9 @@ export class BaseRoutes {
     public userController: UserController = new UserController();
     public donationsController: DonationsController = new DonationsController();
     public authorizationChecker: AuthorizationCheckerInterface = new AuthorizationChecker();
+    public validator: Validator = new Validator();
     
-    public routes(app): void {
+    public routes(app: Application): void {
 
         app.route('/contact') 
             .get(this.responseAdditions, this.contactController.getContacts)        
@@ -28,10 +33,10 @@ export class BaseRoutes {
 
         app.route('/user') 
             .get(this.authorizationChecker.isAuthorized, this.responseAdditions, this.userController.getUsers)        
-            .post(this.responseAdditions, this.userController.registerUser)
+            .post(this.responseAdditions, UserValidator.post, this.validator.validate ,this.userController.registerUser)
 
         app.route('/login')
-            .post(this.responseAdditions, this.userController.postLogin);
+            .post(this.responseAdditions, UserValidator.login, this.validator.validate, this.userController.postLogin);
 
         app.route('/logout')
             .get(this.responseAdditions, this.userController.logout);

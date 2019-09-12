@@ -1,52 +1,32 @@
+import axios from 'axios'
+const transport = axios.create({
+    withCredentials: true,
+    baseURL: 'http://localhost:8080' 
+})
+
 export default class Api{
-    url = 'http://localhost:8080'
 
     addContact = (contact) => {
-        return fetch(`${this.url}/contact`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'same-origin',
-            body: JSON.stringify(contact),
-          }).then(res => res.json())
+        return transport.post(`/contact`, contact).then(res => res.data)
     }
 
     getAllContacts = () => {
-        return fetch(`${this.url}/contact`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        }).then(res => res.json())
+        return transport.get(`/contact`).then(res => res.data)
     }
 
     login = (user) => {
-        return fetch(`${this.url}/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'same-origin',
-            body: JSON.stringify(user),
-          }).then(res => res.json())
+        return transport.post(`/login`,user).then(res => res.data)
     }
 
     logout = () => {
-        return fetch(`${this.url}/logout`, {
-            method: 'GET',
-            credentials: 'same-origin',
-            headers: { 'Content-Type': 'application/json' },
-        }).then(res => res.json())
+        return transport.get(`/logout`).then(res => res.data)
     }
 
     donate = (donation) => {
-        return fetch(`${this.url}/donate`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(donation),
-            credentials: 'same-origin',
-          }).then(response => response.json())
+        return transport.post(`/donate`, donation).then(res => res.data)
     }
 
     getDonations = () => {
-        return fetch(`${this.url}/donations`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-          }).then(response => response.json())
+        return transport.get(`/donations`).then(res => res.data)
     }
 }

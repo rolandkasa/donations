@@ -13,7 +13,7 @@ const DonationSchema = new Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: 'Add Amount'
+        required: 'User Required.'
     },
     amount: {
         type: Number,

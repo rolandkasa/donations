@@ -55,9 +55,13 @@ const styles = theme => ({
   
   
     handleSubmit = event => {
-      if (this.state.donation !== "") {
+      const user = this.props.user
+      if (this.state.donation !== "" && user) {
+        let donation = this.state.donation
+        donation.user = user._id
+
         // add the item to the store
-        this.props.donate(this.state.donation);
+        this.props.donate(donation);
       }
       this.setState({ donation: "" });
       event.preventDefault();
@@ -106,7 +110,8 @@ const styles = theme => ({
   }
 
 const mapStateToProps = state => ({
-    donations: state.donationReducer.donations
+    donations: state.donationReducer.donations,
+    user: state.auth.user
   });
   
 const mapDispatchToProps = dispatch => ({
