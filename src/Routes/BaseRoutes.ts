@@ -9,6 +9,7 @@ import Validator from '../Middlewares/Validator'
 
 //validators
 import {UserValidator} from '../Models/ValidatorModels/UserValidator'
+import {DonationValidator} from '../Models/ValidatorModels/DonationValidator'
 
 //Models
 import Contact from '../Models/MongooseModels/ContactSchema'
@@ -42,9 +43,9 @@ export class BaseRoutes {
             .get(this.responseAdditions, this.userController.logout);
 
         app.route('/donations').get(this.responseAdditions, this.donationsController.findAllDonations)
-        app.route('/donate').post(this.authorizationChecker.isAuthorized, this.responseAdditions, this.donationsController.addNewDonation)
+        app.route('/donate').post(this.authorizationChecker.isAuthorized, this.responseAdditions, DonationValidator.post, this.validator.validate, this.donationsController.addNewDonation)
         app.route('/donation/:id')
-            .patch(this.authorizationChecker.isAuthorized, this.responseAdditions, this.donationsController.updateDonation)
+            .patch(this.authorizationChecker.isAuthorized, this.responseAdditions, DonationValidator.patch, this.validator.validate, this.donationsController.updateDonation)
             .delete(this.authorizationChecker.isAuthorized, this.responseAdditions, this.donationsController.deleteDonation)
     }
 
