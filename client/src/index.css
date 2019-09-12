@@ -14,3 +14,14 @@ body {
 .right{
   float: right;
 }
+
+.right-login{
+  margin-right: 40px;
+  top: 0;
+  right: 0;
+  position: absolute;
+  border: 1px solid white;
+  border-radius: 5px;
+  box-shadow: 4px;
+  display: block;
+}

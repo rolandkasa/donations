@@ -2,55 +2,53 @@ import { Request, Response } from 'express';
 import FormatResponse from '../Utils/FormatResponse';
 import Donation from '../Models/MongooseModels/DonationSchema'
 import RequestInterface from '../Interfaces/RequestInterface'
+import ResponseInterface from '../Interfaces/ResponseInterface'
 
 export class DonationsController{
-    public async findAllDonations ( req: Request, res: Response ): Promise<Response>{
+    public async findAllDonations ( req: Request, res: ResponseInterface ): Promise<ResponseInterface>{
         try{
             const donations = await Donation.find().populate('user')
-            return res.json(FormatResponse.transform(donations,200))
+            return res.handleSuccess(donations)
         }catch(error){
-            return res.json(FormatResponse.transform(error,500))
+            return res.handleError(error)
         }
     }
 
-    public async getMyDonations ( req: RequestInterface, res: Response ): Promise<Response>{
+    public async getMyDonations ( req: RequestInterface, res: ResponseInterface ): Promise<ResponseInterface>{
         try{
             const donations = await Donation.find({_id: req.user._id})
-            return res.json(FormatResponse.transform(donations,200))
+            return res.handleSuccess(donations)
         }catch(error){
-            return res.json(FormatResponse.transform(error,500))
+            return res.handleError(error)
         }
 
     }
 
-    public async addNewDonation ( req: RequestInterface, res: Response ): Promise<Response> {
+    public async addNewDonation ( req: RequestInterface, res: ResponseInterface ): Promise<ResponseInterface> {
         try{
             const donation = new Donation(req.body)
             const persistedDonation = await donation.save()
-            return res.json(FormatResponse.transform(persistedDonation,200))
+            return res.handleSuccess(persistedDonation)
         }catch(error){
-            return res.json(FormatResponse.transform(error,500))
+            return res.handleError(error)
         }   
     }
 
-    public async updateDonation ( req: RequestInterface, res: Response ): Promise<Response> {
+    public async updateDonation ( req: RequestInterface, res: ResponseInterface ): Promise<ResponseInterface> {
         try{
             const updatedDonation = await Donation.update({ _id: req.params.id, user: req.user._id}, req.body)
-            return res.json(FormatResponse.transform(updatedDonation,200))
+            return res.handleSuccess(updatedDonation)
         }catch(error){
-            return res.json(FormatResponse.transform(error,500))
+            return res.handleError(error)
         }
     }
 
-    public async deleteDonation ( req: RequestInterface, res: Response ): Promise<Response> {
+    public async deleteDonation ( req: RequestInterface, res: ResponseInterface ): Promise<ResponseInterface> {
         try{
             const result = await Donation.deleteOne({_id: req.params.id, user: req.user._id})
-            return res.json(FormatResponse.transform(
-                result.deletedCount > 0 ? "The requested donation was removed" : "The requested donation was not found." ,
-                result.deletedCount > 0 ? 200 : 404)
-                )
+            return res.handleSuccess(result.deletedCount > 0 ? "The requested donation was removed" : "The requested donation was not found.")
         }catch(error){
-            return res.json(FormatResponse.transform(error,500))
+            return res.handleError(error)
         }
     }
 }
