@@ -1,25 +1,26 @@
 import { Request, Response } from 'express';
 import FormatResponse from '../Utils/FormatResponse';
 import Contact from '../Models/MongooseModels/ContactSchema'
+import ResponseInterface from '../Interfaces/ResponseInterface'
 import * as mongoose from 'mongoose'
 
 export class ContactController{
-    public async addNewContact (req: Request, res: Response) {                
+    public async addNewContact (req: Request, res: ResponseInterface): Promise<ResponseInterface> {                
         try{
             let newContact = new Contact(req.body);
             let persistedContract = await newContact.save()
-            return res.json(FormatResponse.transform(persistedContract,200))
+            return res.handleSuccess(persistedContract);
         }catch(error){
-            return res.json(FormatResponse.transform(error,500))
+            return res.handleError(error)
         }
     }
 
-    public async getContacts ( req:Request, res:Response ){
+    public async getContacts ( req:Request, res:ResponseInterface ): Promise<ResponseInterface>{
         try{
             let contacts = await Contact.find()
-            return res.json(FormatResponse.transform(contacts,200))
+            return res.handleSuccess(contacts)
         }catch(error){
-            return res.json(FormatResponse.transform(error,500))
+            return res.handleError(error)
         }
     }
 }

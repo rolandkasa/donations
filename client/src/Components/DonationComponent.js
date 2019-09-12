@@ -36,7 +36,7 @@ const styles = theme => ({
   
     generate = () => {
       return this.props.donations ?  this.props.donations.map(donation => (
-        <ListItem key={donation.id}>
+        <ListItem key={donation._id}>
           <div>
             Email: {donation.user.email}<br/>
             Amount: {donation.amount}<br/>

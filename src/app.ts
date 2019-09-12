@@ -6,6 +6,9 @@ import * as connectMongo from 'connect-mongo';
 import * as ExpressSession from 'express-session'
 import * as cookieParser from 'cookie-parser'
 import * as passport from 'passport'
+import ResponseInterface from './Interfaces/ResponseInterface'
+import FormatResponse from './Utils/FormatResponse'
+import RequestInterface from "Interfaces/RequestInterface";
 const cookieSession = require('cookie-session')
 
 
@@ -30,15 +33,17 @@ class App {
             this.app.use(bodyParser.urlencoded({ extended: false }));
             
             this.app.use(function(req, res, next) {
-                res.header("Access-Control-Allow-Origin", "*");
+                res.header("Access-Control-Allow-Origin", "http://localhost:3000");
                 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+                res.header("Access-Control-Allow-Credentials", "true")
                 next();
             });
+
 
             this.app.use(cookieParser())
             this.app.use(cookieSession({
                 name: 'session',
-                keys: ['session1', 'session2']
+                keys: ['donations']
             }))
             
             const MongoStore = connectMongo(ExpressSession);

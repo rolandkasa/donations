@@ -10,6 +10,8 @@ import {AuthorizationChecker, AuthorizationCheckerInterface} from '../Middleware
 import Contact from '../Models/MongooseModels/ContactSchema'
 import User from '../Models/MongooseModels/UserSchema'
 import Donation from '../Models/MongooseModels/DonationSchema'
+import RequestInterface from "Interfaces/RequestInterface";
+import ResponseInterface from "Interfaces/ResponseInterface";
 
 
 export class BaseRoutes {     
@@ -21,23 +23,35 @@ export class BaseRoutes {
     public routes(app): void {
 
         app.route('/contact') 
-            .get(this.contactController.getContacts)        
-            .post(this.authorizationChecker.isAuthorized, this.contactController.addNewContact)
+            .get(this.responseAdditions, this.contactController.getContacts)        
+            .post(this.authorizationChecker.isAuthorized, this.responseAdditions, this.contactController.addNewContact)
 
         app.route('/user') 
-            .get(this.authorizationChecker.isAuthorized, this.userController.getUsers)        
-            .post(this.userController.registerUser)
+            .get(this.authorizationChecker.isAuthorized, this.responseAdditions, this.userController.getUsers)        
+            .post(this.responseAdditions, this.userController.registerUser)
 
         app.route('/login')
-            .post(this.userController.postLogin);
+            .post(this.responseAdditions, this.userController.postLogin);
 
         app.route('/logout')
-            .get(this.userController.logout);
+            .get(this.responseAdditions, this.userController.logout);
 
-        app.route('/donations').get(this.donationsController.findAllDonations)
-        app.route('/donate').post(this.authorizationChecker.isAuthorized, this.donationsController.addNewDonation)
+        app.route('/donations').get(this.responseAdditions, this.donationsController.findAllDonations)
+        app.route('/donate').post(this.authorizationChecker.isAuthorized, this.responseAdditions, this.donationsController.addNewDonation)
         app.route('/donation/:id')
-            .patch(this.authorizationChecker.isAuthorized, this.donationsController.updateDonation)
-            .delete(this.authorizationChecker.isAuthorized, this.donationsController.deleteDonation)
+            .patch(this.authorizationChecker.isAuthorized, this.responseAdditions, this.donationsController.updateDonation)
+            .delete(this.authorizationChecker.isAuthorized, this.responseAdditions, this.donationsController.deleteDonation)
     }
+
+    private responseAdditions(req: RequestInterface, res: ResponseInterface, next: Function): void{
+        res.handleSuccess = (payload: Object) => {
+            return res.status(200).send(FormatResponse.transform(payload,200))
+        }
+        res.handleError = (error: Object) => {
+            return res.status(500).send(FormatResponse.transform(error, 500))
+        }
+
+        return next()
+    }
+
 }

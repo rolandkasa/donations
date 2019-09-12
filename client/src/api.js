@@ -5,6 +5,7 @@ export default class Api{
         return fetch(`${this.url}/contact`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin',
             body: JSON.stringify(contact),
           }).then(res => res.json())
     }
@@ -16,11 +17,29 @@ export default class Api{
         }).then(res => res.json())
     }
 
+    login = (user) => {
+        return fetch(`${this.url}/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin',
+            body: JSON.stringify(user),
+          }).then(res => res.json())
+    }
+
+    logout = () => {
+        return fetch(`${this.url}/logout`, {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+        }).then(res => res.json())
+    }
+
     donate = (donation) => {
         return fetch(`${this.url}/donate`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(donation),
+            credentials: 'same-origin',
           }).then(response => response.json())
     }
 

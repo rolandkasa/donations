@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import Contact from "./Components/ContactComponent";
 import Donation from './Components/DonationComponent'
+import Login from './Components/LoginComponent'
 import { Provider as ReduxProvider } from "react-redux";
 import configureStore from "./store";
 
@@ -15,6 +16,9 @@ class App extends Component {
         <div className="App">
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
+            <div className="right-login">
+                <Login />
+            </div>
             <h1 className="App-title">Donations</h1>
           </header>
           <Donation/>
