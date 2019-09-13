@@ -14,7 +14,7 @@ const donationReducer = (state = defaultState, action) => {
       return newState;
     }
 
-    case ACTIONS.Types.LIST_DONATIONS : {
+    case ACTIONS.Types.LIST_DONATIONS: {
       let newState = _.cloneDeep(state)
       newState.donations = action.payload.payload
       return newState

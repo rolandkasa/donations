@@ -1,10 +1,10 @@
 import axios from 'axios'
 const transport = axios.create({
     withCredentials: true,
-    baseURL: 'http://localhost:8080' 
+    baseURL: 'http://localhost:8080'
 })
 
-export default class Api{
+export default class Api {
 
     addContact = (contact) => {
         return transport.post(`/contact`, contact).then(res => res.data)
@@ -19,11 +19,11 @@ export default class Api{
     }
 
     login = (user) => {
-        return transport.post(`/login`,user).then(res => res.data)
+        return transport.post(`/login`, user).then(res => res.data)
     }
 
     register = (user) => {
-        return transport.post('/user',user).then(res => res.data)
+        return transport.post('/user', user).then(res => res.data)
     }
 
     isAuthorized = () => {

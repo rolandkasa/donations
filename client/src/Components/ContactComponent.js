@@ -23,7 +23,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
     margin: "auto",
   },
-  form:{
+  form: {
     left: "50%",
     textAlign: "center",
     margin: "auto",
@@ -36,34 +36,34 @@ const styles = theme => ({
 
 class Contact extends Component {
   state = {
-      contact: {
+    contact: {
 
-      },
-      isLoading: true
+    },
+    isLoading: true
   };
 
   generate = () => {
-    return this.props.contacts ?  this.props.contacts.map(contact => (
+    return this.props.contacts ? this.props.contacts.map(contact => (
       <ListItem key={contact.id}>
         <div>
-          Name: {contact.firstName} {contact.lastName}<br/>
-          Company: {contact.company}<br/>
-          Phone: {contact.phone}<br/>
+          Name: {contact.firstName} {contact.lastName}<br />
+          Company: {contact.company}<br />
+          Phone: {contact.phone}<br />
         </div>
-          <IconButton
-            aria-label="Delete"
-            onClick={() => {this.handleDelete(contact.id)}}
-            value={contact.id}
-          >
-            <DeleteIcon />
-          </IconButton>
+        <IconButton
+          aria-label="Delete"
+          onClick={() => { this.handleDelete(contact.id) }}
+          value={contact.id}
+        >
+          <DeleteIcon />
+        </IconButton>
       </ListItem>
-    )): ""
+    )) : ""
   };
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.getAll();
-    this.setState({isLoading: false})
+    this.setState({ isLoading: false })
   }
 
 
@@ -79,7 +79,7 @@ class Contact extends Component {
   handleDelete = id => {
     this.props.deleteItem(id);
   };
-  handleChange = (event,prop) => {
+  handleChange = (event, prop) => {
     let contact = this.state.contact;
     contact[event.target.name] = event.target.value
     this.setState(...this.state, contact);
@@ -88,54 +88,76 @@ class Contact extends Component {
   render() {
     const { classes } = this.props;
 
-    return (this.state.isLoading ? "Loading":  
+    return (this.state.isLoading ? "Loading" :
       <div className="App">
         <header className="App-header">
-            <h1 className="App-title">Contact</h1>
-          </header>
-          {this.props.user ? (
-            <div className={classes.form}>
-          <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-            <FormControl>
-              <TextField
-                label="Email"
-                id="margin-dense"
-                value={this.state.contact.email}
-                className={classes.textField}
-                margin="dense"
-                name="email"
-                onChange={this.handleChange}
-              />
-            </FormControl>
-            <FormControl>
-              <TextField
-                label="Name"
-                id="margin-dense"
-                value={this.state.contact.name}
-                className={classes.textField}
-                margin="dense"
-                name="name"
-                onChange={this.handleChange}
-              />
-            </FormControl>
-            <FormControl>
-              <TextField
-                label="Phone"
-                id="margin-dense"
-                value={this.state.contact.phone}
-                className={classes.textField}
-                margin="dense"
-                name="phone"
-                onChange={this.handleChange}
-              />
-            </FormControl>
-            <FormControl>
-              <Button className="fixed-line-height" onClick={this.handleSubmit}>Add</Button>
-            </FormControl>
-          </form>
-        </div>
-          ): (<div />)}
-        
+          <h1 className="App-title">Contact</h1>
+        </header>
+        {this.props.user ? (
+          <div className={classes.form}>
+            <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+              <FormControl>
+                <TextField
+                  label="Email"
+                  id="margin-dense"
+                  value={this.state.contact.email}
+                  className={classes.textField}
+                  margin="normal"
+                  name="email"
+                  onChange={this.handleChange}
+                />
+              </FormControl>
+              <FormControl>
+                <TextField
+                  label="First Name"
+                  id="margin-dense"
+                  value={this.state.contact.firstName}
+                  className={classes.textField}
+                  margin="normal"
+                  name="firstName"
+                  onChange={this.handleChange}
+                />
+              </FormControl>
+              <FormControl>
+                <TextField
+                  label="Last Name"
+                  id="margin-dense"
+                  value={this.state.contact.lastName}
+                  className={classes.textField}
+                  margin="normal"
+                  name="lastName"
+                  onChange={this.handleChange}
+                />
+              </FormControl>
+              <FormControl>
+                <TextField
+                  label="Company"
+                  id="margin-dense"
+                  value={this.state.contact.company}
+                  className={classes.textField}
+                  margin="normal"
+                  name="company"
+                  onChange={this.handleChange}
+                />
+              </FormControl>
+              <FormControl>
+                <TextField
+                  label="Phone"
+                  id="margin-dense"
+                  value={this.state.contact.phone}
+                  className={classes.textField}
+                  margin="normal"
+                  name="phone"
+                  onChange={this.handleChange}
+                />
+              </FormControl>
+              <FormControl>
+                <Button className="fixed-line-height" onClick={this.handleSubmit}>Add</Button>
+              </FormControl>
+            </form>
+          </div>
+        ) : (<div />)}
+
         <div className={classes.demo}>
           <Grid item container justify="space-evenly" alignItems="center">
             <div>
@@ -149,17 +171,17 @@ class Contact extends Component {
 }
 
 const mapStateToProps = state => ({
-    contacts: state.contactReducer.contacts,
-    user: state.auth.user
-  });
-  
-  const mapDispatchToProps = dispatch => ({
-    createItem: item => dispatch(ACTIONS.createItem(item)),
-    deleteItem: id => dispatch(ACTIONS.deleteItem(id)),
-    getAll: () => dispatch(ACTIONS.getAll())
-  });
-  
-  export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withStyles(styles)(Contact));
+  contacts: state.contactReducer.contacts,
+  user: state.auth.user
+});
+
+const mapDispatchToProps = dispatch => ({
+  createItem: item => dispatch(ACTIONS.createItem(item)),
+  deleteItem: id => dispatch(ACTIONS.deleteItem(id)),
+  getAll: () => dispatch(ACTIONS.getAll())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(Contact));

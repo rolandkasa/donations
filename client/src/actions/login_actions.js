@@ -63,22 +63,22 @@ const register = (user) => {
                 type: Types.USER_REGISTER,
                 payload: user
             })
-            const userLogin = {email: userStarter.email, password: userStarter.password}
+            const userLogin = { email: userStarter.email, password: userStarter.password }
             return api.login(userLogin)
         })
-        .then((user) => {
-            dispatch({
-                type: Types.LOGIN,
-                payload: user
+            .then((user) => {
+                dispatch({
+                    type: Types.LOGIN,
+                    payload: user
+                })
             })
-        })
-        .catch((error) => {
-            dispatch({
-                type: Types.UNSUCCESSFUL_REQUEST,
-                payload: null,
-                error: error
+            .catch((error) => {
+                dispatch({
+                    type: Types.UNSUCCESSFUL_REQUEST,
+                    payload: null,
+                    error: error
+                })
             })
-        })
     }
 }
 
@@ -100,7 +100,7 @@ const logout = () => {
             })
         })
     }
-    
+
 }
 
 export default {

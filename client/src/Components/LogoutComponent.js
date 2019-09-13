@@ -7,12 +7,12 @@ import { Redirect } from 'react-router-dom'
 
 
 class Logout extends Component {
-    componentWillMount(){
+    componentWillMount() {
         this.props.logout()
     }
 
     render() {
-        return (<Redirect to="/"/>)
+        return (<Redirect to="/" />)
     }
 
 }
@@ -20,7 +20,7 @@ class Logout extends Component {
 const mapStateToProps = state => ({
     user: state.auth.user
 });
-  
+
 const mapDispatchToProps = dispatch => ({
     logout: () => dispatch(ACTIONS.logout()),
     isAuthorized: () => dispatch(ACTIONS.isAuthorized())

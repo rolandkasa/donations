@@ -15,7 +15,7 @@ const contactReducer = (state = defaultState, action) => {
       return newState;
     }
 
-    case ACTIONS.Types.GET_CONTACTS : {
+    case ACTIONS.Types.GET_CONTACTS: {
       let newState = _.cloneDeep(state)
       newState.contacts = action.payload.payload
       return newState
