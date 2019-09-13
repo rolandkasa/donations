@@ -1,5 +1,5 @@
 import {Request,NextFunction} from 'express'
-import {validationResult, ResultFactory, ValidationError,Result,Location} from 'express-validator'
+import {validationResult, Result } from 'express-validator'
 import ResponseInterface from '../Interfaces/ResponseInterface'
 
 export default class Validator{

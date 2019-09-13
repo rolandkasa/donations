@@ -3,19 +3,41 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  height: 50px;
 }
 
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 120px;
   padding: 20px;
   color: white;
 }
 
 .App-intro {
   font-size: large;
+}
+
+.signup-container{
+  width: 1200px;
+  margin: auto;
+  margin-top: 30px;
+}
+
+.navbar-nav a{
+  color: black;
+  margin: 0px 10px; 
+  padding-top: 10px;
+}
+
+.navbar-right{
+  position: absolute;
+  right: 1%;
+  float: right;
+}
+
+.activeRoute {
+  border-bottom: 0.4rem solid teal;
+  cursor: not-allowed;
 }
 
 @keyframes App-logo-spin {

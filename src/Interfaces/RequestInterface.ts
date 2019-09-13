@@ -1,5 +1,5 @@
 import {Request} from 'express'
-import User, {UserInterface} from '../Models/MongooseModels/UserSchema'
+import {UserInterface} from '../Models/MongooseModels/UserSchema'
 
 export default interface RequestInterface extends Request{
     user: UserInterface;

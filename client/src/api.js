@@ -22,6 +22,10 @@ export default class Api{
         return transport.post(`/login`,user).then(res => res.data)
     }
 
+    register = (user) => {
+        return transport.post('/user',user).then(res => res.data)
+    }
+
     isAuthorized = () => {
         return transport.get('/is-authorized').then(res => res.data)
     }

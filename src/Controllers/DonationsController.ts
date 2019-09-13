@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import Donation from '../Models/MongooseModels/DonationSchema'
 import RequestInterface from '../Interfaces/RequestInterface'
 import ResponseInterface from '../Interfaces/ResponseInterface'
@@ -28,8 +28,10 @@ export class DonationsController{
         try{
             const donation = new Donation(req.body)
             const persistedDonation = await donation.save()
-            return res.handleSuccess(persistedDonation)
+            const populatedDonation = await Donation.populate(persistedDonation, {path: 'user'})
+            return res.handleSuccess(populatedDonation)
         }catch(error){
+            console.log(error)
             return res.handleError(error)
         }   
     }

@@ -4,7 +4,6 @@ import {
   withStyles,
   List,
   ListItem,
-  ListItemSecondaryAction,
   IconButton,
   Grid,
   TextField,
@@ -22,17 +21,13 @@ const styles = theme => ({
   },
   demo: {
     backgroundColor: theme.palette.background.paper,
-    float: "right",
-    display: "inline-box",
-    marginRight: "100px",
-    width: "40%"
+    margin: "auto",
   },
   form:{
-    display: "inline-box",
-    float: "left",
-    margin: "20px 20px 0px 20px",
-    marginLeft: "100px",
-    width: "40%"
+    left: "50%",
+    textAlign: "center",
+    margin: "auto",
+    width: "100%"
   },
   title: {
     margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`
@@ -55,7 +50,6 @@ class Contact extends Component {
           Company: {contact.company}<br/>
           Phone: {contact.phone}<br/>
         </div>
-        <ListItemSecondaryAction>
           <IconButton
             aria-label="Delete"
             onClick={() => {this.handleDelete(contact.id)}}
@@ -63,7 +57,6 @@ class Contact extends Component {
           >
             <DeleteIcon />
           </IconButton>
-        </ListItemSecondaryAction>
       </ListItem>
     )): ""
   };
@@ -96,10 +89,13 @@ class Contact extends Component {
     const { classes } = this.props;
 
     return (this.state.isLoading ? "Loading":  
-      <div>
-        <div className={classes.form}>
+      <div className="App">
+        <header className="App-header">
+            <h1 className="App-title">Contact</h1>
+          </header>
+          {this.props.user ? (
+            <div className={classes.form}>
           <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-            <h3>Contacts</h3>
             <FormControl>
               <TextField
                 label="Email"
@@ -134,10 +130,12 @@ class Contact extends Component {
               />
             </FormControl>
             <FormControl>
-              <Button onClick={this.handleSubmit}>Add</Button>
+              <Button className="fixed-line-height" onClick={this.handleSubmit}>Add</Button>
             </FormControl>
           </form>
         </div>
+          ): (<div />)}
+        
         <div className={classes.demo}>
           <Grid item container justify="space-evenly" alignItems="center">
             <div>
@@ -151,7 +149,8 @@ class Contact extends Component {
 }
 
 const mapStateToProps = state => ({
-    contacts: state.contactReducer.contacts
+    contacts: state.contactReducer.contacts,
+    user: state.auth.user
   });
   
   const mapDispatchToProps = dispatch => ({

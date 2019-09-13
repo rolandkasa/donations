@@ -1,18 +1,10 @@
 
 import React, { Component } from "react";
-import {
-  withStyles,
-  TextField,
-  Button,
-  FormControl
-} from "@material-ui/core";
 import ACTIONS from "../actions/login_actions";
 import { connect } from "react-redux";
+import {Form,Button} from 'react-bootstrap'
+import {Redirect} from 'react-router-dom'
 import _ from 'lodash'
-
-const styles = theme => ({
-
-})
 
 class Login extends Component {
     state = {
@@ -39,52 +31,31 @@ class Login extends Component {
         user[event.target.name] = event.target.value
         this.setState(...this.state, user); 
       };
-
-      handleLogoutIntent = event => {
-          this.props.logout()
-      }
   
       render() {
-        const { classes } = this.props;
-        return ( this.state.isLoading ? "Loading": !_.isEmpty(this.props.user) ? 
-          <div>
-            <FormControl>
-                  <Button onClick={this.handleLogoutIntent}>Logout</Button>
-                </FormControl>
+        if ( !_.isEmpty(this.props.user) ){
+          return <Redirect to='/'></Redirect>
+        }
+
+        return (
+          <div className="App">
+          <header className="App-header">
+            <h1 className="App-title">Login</h1>
+          </header>
+          <div className="signup-container">
+            <Form>
+              <Form.Group controlId="formBasicEmail">
+                <Form.Control type="email" placeholder="Enter email" name="email" value={this.state.email} onChange={this.handleChange}/>
+              </Form.Group>
+              <Form.Group controlId="formBasicPassword">
+                <Form.Control type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
+              </Form.Group>
+              <Button variant="primary" type="submit" onClick={this.handleSubmit}>
+                Submit
+              </Button>
+            </Form>
           </div>
-        :
-          (<div>
-            <div className={classes.form}>
-              <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-                <FormControl>
-                  <TextField
-                    label="Email"
-                    id="margin-dense"
-                    value={this.state.user.email}
-                    className={classes.textField}
-                    margin="dense"
-                    name="email"
-                    onChange={this.handleChange}
-                  />
-                  <TextField
-                  id="standard-password-input"
-                  label="Password"
-                  value={this.state.user.password}
-                  className={classes.textField}
-                  type="password"
-                  autoComplete="current-password"
-                  margin="normal"
-                  name="password"
-                  onChange={this.handleChange}
-                  />
-                </FormControl>
-                <FormControl>
-                  <Button onClick={this.handleSubmit}>Login</Button>
-                </FormControl>
-              </form>
-            </div>
           </div>)
-        );
       }
 
 }
@@ -95,11 +66,10 @@ const mapStateToProps = state => ({
   
   const mapDispatchToProps = dispatch => ({
     login: item => dispatch(ACTIONS.login(item)),
-    logout: () => dispatch(ACTIONS.logout()),
     isAuthorized: () => dispatch(ACTIONS.isAuthorized())
   });
   
   export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(withStyles(styles)(Login));
+  )(Login);

@@ -25,3 +25,6 @@ body {
   box-shadow: 4px;
   display: block;
 }
+.fixed-line-height{
+  line-height: 60px !important;
+}

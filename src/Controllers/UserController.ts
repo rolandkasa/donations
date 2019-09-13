@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import FormatResponse from '../Utils/FormatResponse';
 import User from '../Models/MongooseModels/UserSchema'
 import {generate} from 'password-hash';
 import passport from '../UserAuthenticators/LocalStrategy'

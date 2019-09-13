@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import Contact from '../Models/MongooseModels/ContactSchema'
 import ResponseInterface from '../Interfaces/ResponseInterface'
 

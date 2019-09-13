@@ -6,9 +6,6 @@ import * as connectMongo from 'connect-mongo';
 import * as ExpressSession from 'express-session'
 import * as cookieParser from 'cookie-parser'
 import * as passport from 'passport'
-import ResponseInterface from './Interfaces/ResponseInterface'
-import FormatResponse from './Utils/FormatResponse'
-import RequestInterface from "Interfaces/RequestInterface";
 const cookieSession = require('cookie-session')
 
 
