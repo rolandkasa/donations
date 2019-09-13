@@ -6,6 +6,7 @@ import * as connectMongo from 'connect-mongo';
 import * as ExpressSession from 'express-session'
 import * as cookieParser from 'cookie-parser'
 import * as passport from 'passport'
+import {CronInterface,CronJob} from './Utils/CronJobs'
 const cookieSession = require('cookie-session')
 
 
@@ -14,10 +15,12 @@ class App {
     public app: express.Application;
     public baseRoutes: BaseRoutes = new BaseRoutes();
     public mongoHelper: MongoHelper = new MongoHelper();
+    private cronJob: CronInterface = new CronJob();
 
     constructor() {
         this.app = express();
         this.config();
+        this.cronJob.startDev();
     }
 
     private config(): void {
