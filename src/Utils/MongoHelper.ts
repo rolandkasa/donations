@@ -7,19 +7,19 @@ export default class MongoHelper {
     }
 
     public connect(url: string): Promise<void> {
-        mongoose.connect(url,{  useNewUrlParser: true })
-        return mongoose.createConnection(url,{  useNewUrlParser: true }).then((db) => {
+        mongoose.connect(url, { useNewUrlParser: true })
+        return mongoose.createConnection(url, { useNewUrlParser: true }).then((db) => {
             this.db = db
             return Promise.resolve()
         })
-        .catch((error) => {
-            console.log(error.message)
-            return Promise.reject()
-        })
+            .catch((error) => {
+                console.log(error.message)
+                return Promise.reject()
+            })
 
     };
 
-    public getDB(){
+    public getDB() {
         return this.db
     }
 }

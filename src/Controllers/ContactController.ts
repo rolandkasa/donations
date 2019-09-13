@@ -1,25 +1,33 @@
-import { Request, Response } from 'express';
-import FormatResponse from '../Utils/FormatResponse';
+import { Request } from 'express';
 import Contact from '../Models/MongooseModels/ContactSchema'
-import * as mongoose from 'mongoose'
+import ResponseInterface from '../Interfaces/ResponseInterface'
 
-export class ContactController{
-    public async addNewContact (req: Request, res: Response) {                
-        try{
+export class ContactController {
+    public async addNewContact(req: Request, res: ResponseInterface): Promise<ResponseInterface> {
+        try {
             let newContact = new Contact(req.body);
             let persistedContract = await newContact.save()
-            return res.json(FormatResponse.transform(persistedContract,200))
-        }catch(error){
-            return res.json(FormatResponse.transform(error,500))
+            return res.handleSuccess(persistedContract);
+        } catch (error) {
+            return res.handleError(error)
         }
     }
 
-    public async getContacts ( req:Request, res:Response ){
-        try{
+    public async getContacts(req: Request, res: ResponseInterface): Promise<ResponseInterface> {
+        try {
             let contacts = await Contact.find()
-            return res.json(FormatResponse.transform(contacts,200))
-        }catch(error){
-            return res.json(FormatResponse.transform(error,500))
+            return res.handleSuccess(contacts)
+        } catch (error) {
+            return res.handleError(error)
+        }
+    }
+
+    public async deleteContact(req: Request, res: ResponseInterface): Promise<ResponseInterface> {
+        try {
+            const result = await Contact.deleteOne({ _id: req.params.id })
+            res.handleSuccess(result)
+        } catch (error) {
+            return res.handleError(error)
         }
     }
 }

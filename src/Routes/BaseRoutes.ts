@@ -1,26 +1,66 @@
-import {Request, Response} from "express";
+//General imports
+import { Application } from "express";
 import FormatResponse from "../Utils/FormatResponse";
-import {ContactController} from '../Controllers/ContactController'
+import { ContactController } from '../Controllers/ContactController'
 import { UserController } from "../Controllers/UserController";
+import { DonationsController } from "../Controllers/DonationsController";
+import { AuthorizationChecker, AuthorizationCheckerInterface } from '../Middlewares/AuthorizationChecker'
+import Validator from '../Middlewares/Validator'
 
+//validators
+import { UserValidator } from '../Models/ValidatorModels/UserValidator'
+import { DonationValidator } from '../Models/ValidatorModels/DonationValidator'
+import { ContactValidator } from '../Models/ValidatorModels/ContactValidator'
+
+//Models
 import Contact from '../Models/MongooseModels/ContactSchema'
 import User from '../Models/MongooseModels/UserSchema'
+import Donation from '../Models/MongooseModels/DonationSchema'
+import RequestInterface from "Interfaces/RequestInterface";
+import ResponseInterface from "Interfaces/ResponseInterface";
 
-export class BaseRoutes {     
+
+export class BaseRoutes {
     public contactController: ContactController = new ContactController();
     public userController: UserController = new UserController();
-    
-    public routes(app): void {
+    public donationsController: DonationsController = new DonationsController();
+    public authorizationChecker: AuthorizationCheckerInterface = new AuthorizationChecker();
+    public validator: Validator = new Validator();
 
-        app.route('/contact') 
-            .get(this.contactController.getContacts)        
-            .post(this.contactController.addNewContact)
+    public routes(app: Application): void {
 
-        app.route('/user') 
-            .get(this.userController.getUsers)        
-            .post(this.userController.registerUser)
+        app.route('/contact')
+            .get(this.responseAdditions, this.contactController.getContacts)
+            .post(this.authorizationChecker.isAuthorized, this.responseAdditions, ContactValidator.post, this.validator.validate, this.contactController.addNewContact)
+
+        app.route('/contact/:id').delete(this.authorizationChecker.isAuthorized, this.responseAdditions, this.contactController.deleteContact)
+        app.route('/user')
+            .get(this.authorizationChecker.isAuthorized, this.responseAdditions, this.userController.getUsers)
+            .post(this.responseAdditions, UserValidator.post, this.validator.validate, this.userController.registerUser)
 
         app.route('/login')
-            .post(this.userController.postLogin);
+            .post(this.responseAdditions, UserValidator.login, this.validator.validate, this.userController.postLogin);
+
+        app.route('/logout')
+            .get(this.responseAdditions, this.userController.logout);
+
+        app.route('/is-authorized').get(this.responseAdditions, this.userController.isAuthorized)
+        app.route('/donations').get(this.responseAdditions, this.donationsController.findAllDonations)
+        app.route('/donate').post(this.authorizationChecker.isAuthorized, this.responseAdditions, DonationValidator.post, this.validator.validate, this.donationsController.addNewDonation)
+        app.route('/donation/:id')
+            .patch(this.authorizationChecker.isAuthorized, this.responseAdditions, DonationValidator.patch, this.validator.validate, this.donationsController.updateDonation)
+            .delete(this.authorizationChecker.isAuthorized, this.responseAdditions, this.donationsController.deleteDonation)
     }
+
+    private responseAdditions(req: RequestInterface, res: ResponseInterface, next: Function): void {
+        res.handleSuccess = (payload: Object) => {
+            return res.status(200).send(FormatResponse.transform(payload, 200))
+        }
+        res.handleError = (error: Object) => {
+            return res.status(500).send(FormatResponse.transform(error, 500))
+        }
+
+        return next()
+    }
+
 }

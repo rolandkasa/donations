@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.bottom{
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+  background-color: white;
+}
+
+.right{
+  float: right;
+}
+
+.right-login{
+  margin-right: 40px;
+  top: 0;
+  right: 0;
+  position: absolute;
+  border: 1px solid white;
+  border-radius: 5px;
+  box-shadow: 4px;
+  display: block;
+}
+.fixed-line-height{
+  line-height: 60px !important;
+}

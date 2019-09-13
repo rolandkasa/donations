@@ -17,24 +17,33 @@ class App {
 
     constructor() {
         this.app = express();
-        this.config();   
+        this.config();
     }
 
-    private config(): void{
+    private config(): void {
         this.connectToDB().then(() => {
             this.app.use(express.static('public'));
-            
+
             // support application/json type post data
             this.app.use(bodyParser.json());
             //support application/x-www-form-urlencoded post data
             this.app.use(bodyParser.urlencoded({ extended: false }));
 
+            this.app.use(function (req, res, next) {
+                res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+                res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+                res.header("Access-Control-Allow-Credentials", "true")
+                res.header('Access-Control-Allow-Methods', 'GET,PUT,PATCH,POST,DELETE')
+                next();
+            });
+
+
             this.app.use(cookieParser())
             this.app.use(cookieSession({
                 name: 'session',
-                keys: ['session1', 'session2']
+                keys: ['donations']
             }))
-            
+
             const MongoStore = connectMongo(ExpressSession);
 
             this.app.use(ExpressSession({
@@ -42,8 +51,10 @@ class App {
                 resave: true,
                 saveUninitialized: true,
                 unset: 'destroy',
-                cookie: { secure: true,
-                    maxAge:  6*60*60*1000 },
+                cookie: {
+                    secure: true,
+                    maxAge: 6 * 60 * 60 * 1000
+                },
                 store: new MongoStore({ mongooseConnection: this.mongoHelper.getDB() })
             }));
             this.app.use(passport.initialize());
@@ -53,7 +64,7 @@ class App {
         });
     }
 
-    private connectToDB(): Promise<void>{
+    private connectToDB(): Promise<void> {
         return this.mongoHelper.connect('mongodb://localhost:27017/donations')
     }
 }

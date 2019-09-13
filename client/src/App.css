@@ -1,0 +1,46 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 50px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 120px;
+  padding: 20px;
+  color: white;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.signup-container{
+  width: 1200px;
+  margin: auto;
+  margin-top: 30px;
+}
+
+.navbar-nav a{
+  color: black;
+  margin: 0px 10px; 
+  padding-top: 10px;
+}
+
+.navbar-right{
+  position: absolute;
+  right: 1%;
+  float: right;
+}
+
+.activeRoute {
+  border-bottom: 0.4rem solid teal;
+  cursor: not-allowed;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
