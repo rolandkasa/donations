@@ -1,12 +1,12 @@
 import { Request } from 'express';
-import Donation from '../Models/MongooseModels/DonationSchema'
+import Donation, { DonationInterface } from '../Models/MongooseModels/DonationSchema'
 import RequestInterface from '../Interfaces/RequestInterface'
 import ResponseInterface from '../Interfaces/ResponseInterface'
 
 export class DonationsController {
     public async findAllDonations(req: Request, res: ResponseInterface): Promise<ResponseInterface> {
         try {
-            let donations = await Donation.find().populate('user')
+            let donations: Array<DonationInterface> = await Donation.find().sort({'amount': -1}).populate('user')
             donations = donations.filter(don => don.user !== null)
             return res.handleSuccess(donations)
         } catch (error) {
