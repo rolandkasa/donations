@@ -20,6 +20,12 @@ const loginReducer = (state = defaultState, action) => {
       return newState
     }
 
+    case ACTIONS.Types.IS_AUTHORIZED : {
+      let newState = _.cloneDeep(state)
+      newState.user = action.payload.payload
+      return newState
+    }
+
     default:
       return state;
   }

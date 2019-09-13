@@ -61,4 +61,8 @@ export class UserController{
         await req.logout()
         return res.handleSuccess({action: "Successfull logout!"});
     }
+
+    public isAuthorized(req: RequestInterface, res: ResponseInterface): ResponseInterface{
+        return res.handleSuccess(req.user)
+    }
 }

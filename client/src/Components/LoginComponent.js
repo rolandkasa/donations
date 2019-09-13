@@ -21,6 +21,7 @@ class Login extends Component {
     }
 
     componentDidMount(){
+      this.props.isAuthorized()
       this.setState({...this.state, isLoading: false})
     }
 
@@ -94,7 +95,8 @@ const mapStateToProps = state => ({
   
   const mapDispatchToProps = dispatch => ({
     login: item => dispatch(ACTIONS.login(item)),
-    logout: () => dispatch(ACTIONS.logout())
+    logout: () => dispatch(ACTIONS.logout()),
+    isAuthorized: () => dispatch(ACTIONS.isAuthorized())
   });
   
   export default connect(

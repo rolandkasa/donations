@@ -10,6 +10,7 @@ import Validator from '../Middlewares/Validator'
 //validators
 import {UserValidator} from '../Models/ValidatorModels/UserValidator'
 import {DonationValidator} from '../Models/ValidatorModels/DonationValidator'
+import {ContactValidator} from '../Models/ValidatorModels/ContactValidator'
 
 //Models
 import Contact from '../Models/MongooseModels/ContactSchema'
@@ -30,8 +31,9 @@ export class BaseRoutes {
 
         app.route('/contact') 
             .get(this.responseAdditions, this.contactController.getContacts)        
-            .post(this.authorizationChecker.isAuthorized, this.responseAdditions, this.contactController.addNewContact)
+            .post(this.authorizationChecker.isAuthorized, this.responseAdditions, ContactValidator.post, this.validator.validate, this.contactController.addNewContact)
 
+        app.route('/contact/:id').delete(this.authorizationChecker.isAuthorized, this.responseAdditions, this.contactController.deleteContact)
         app.route('/user') 
             .get(this.authorizationChecker.isAuthorized, this.responseAdditions, this.userController.getUsers)        
             .post(this.responseAdditions, UserValidator.post, this.validator.validate ,this.userController.registerUser)
@@ -42,6 +44,7 @@ export class BaseRoutes {
         app.route('/logout')
             .get(this.responseAdditions, this.userController.logout);
 
+        app.route('/is-authorized').get(this.responseAdditions, this.userController.isAuthorized)
         app.route('/donations').get(this.responseAdditions, this.donationsController.findAllDonations)
         app.route('/donate').post(this.authorizationChecker.isAuthorized, this.responseAdditions, DonationValidator.post, this.validator.validate, this.donationsController.addNewDonation)
         app.route('/donation/:id')

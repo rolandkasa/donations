@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
-import FormatResponse from '../Utils/FormatResponse';
 import Contact from '../Models/MongooseModels/ContactSchema'
 import ResponseInterface from '../Interfaces/ResponseInterface'
-import * as mongoose from 'mongoose'
 
 export class ContactController{
     public async addNewContact (req: Request, res: ResponseInterface): Promise<ResponseInterface> {                
@@ -19,6 +17,15 @@ export class ContactController{
         try{
             let contacts = await Contact.find()
             return res.handleSuccess(contacts)
+        }catch(error){
+            return res.handleError(error)
+        }
+    }
+
+    public async deleteContact (req:Request, res:ResponseInterface): Promise<ResponseInterface>{
+        try{
+            const result = await Contact.deleteOne({_id: req.params.id})
+            res.handleSuccess(result)
         }catch(error){
             return res.handleError(error)
         }

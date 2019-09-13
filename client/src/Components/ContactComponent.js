@@ -58,7 +58,7 @@ class Contact extends Component {
         <ListItemSecondaryAction>
           <IconButton
             aria-label="Delete"
-            onClick={this.handleDelete}
+            onClick={() => {this.handleDelete(contact.id)}}
             value={contact.id}
           >
             <DeleteIcon />
@@ -83,8 +83,8 @@ class Contact extends Component {
     event.preventDefault();
   };
 
-  handleDelete = event => {
-    this.props.deleteItem(event.target.value);
+  handleDelete = id => {
+    this.props.deleteItem(id);
   };
   handleChange = (event,prop) => {
     let contact = this.state.contact;

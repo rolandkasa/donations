@@ -21,9 +21,9 @@ const contactReducer = (state = defaultState, action) => {
       return newState
     }
 
-    case ACTIONS.Types.DELETE_ITEM: {
+    case ACTIONS.Types.DELETE_CONTACT: {
       let newState = _.cloneDeep(state);
-      let index = _.findIndex(newState.contacts, { id: action.payload.payload });
+      let index = _.findIndex(newState.contacts, { id: action.payload });
       newState.contacts.splice(index, 1);
       return newState;
     }

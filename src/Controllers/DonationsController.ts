@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import FormatResponse from '../Utils/FormatResponse';
 import Donation from '../Models/MongooseModels/DonationSchema'
 import RequestInterface from '../Interfaces/RequestInterface'
 import ResponseInterface from '../Interfaces/ResponseInterface'
@@ -7,7 +6,8 @@ import ResponseInterface from '../Interfaces/ResponseInterface'
 export class DonationsController{
     public async findAllDonations ( req: Request, res: ResponseInterface ): Promise<ResponseInterface>{
         try{
-            const donations = await Donation.find().populate('user')
+            let donations = await Donation.find().populate('user')
+            donations = donations.filter(don => don.user !== null)
             return res.handleSuccess(donations)
         }catch(error){
             return res.handleError(error)

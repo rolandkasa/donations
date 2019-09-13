@@ -10,12 +10,20 @@ export default class Api{
         return transport.post(`/contact`, contact).then(res => res.data)
     }
 
+    deleteContact = (id) => {
+        return transport.delete(`/contact/${id}`).then(res => res.data)
+    }
+
     getAllContacts = () => {
         return transport.get(`/contact`).then(res => res.data)
     }
 
     login = (user) => {
         return transport.post(`/login`,user).then(res => res.data)
+    }
+
+    isAuthorized = () => {
+        return transport.get('/is-authorized').then(res => res.data)
     }
 
     logout = () => {

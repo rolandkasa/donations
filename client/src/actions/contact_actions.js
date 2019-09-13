@@ -52,10 +52,24 @@ const getAll = () => {
     
 }
 
-const deleteItem = id => ({
-    type: Types.DELETE_CONTACT,
-    payload: id
-});
+const deleteItem = (id) => {
+    return dispatch => {
+    dispatch({
+        type: Types.CONTACT_STARTED
+    })
+    api.deleteContact(id).then((response) => {
+        dispatch({
+            type: Types.DELETE_CONTACT,
+            payload: id
+        })
+    }).catch((error) => {
+        dispatch({
+            type: Types.UNSUCCESSFUL_REQUEST,
+            payload: null,
+            error: error
+        })
+    })
+}}
 
 export default {
     createItem,
