@@ -2,7 +2,7 @@ import * as passport from "passport";
 import * as passportLocal from "passport-local";
 import _ from "lodash";
 import User from "../Models/MongooseModels/UserSchema";
-import {verify} from 'password-hash'
+import { verify } from 'password-hash'
 
 const LocalStrategy = passportLocal.Strategy;
 
@@ -15,13 +15,13 @@ passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, don
         if (!user) {
             return done(undefined, false, { message: `Email ${email} not found.` });
         }
-        const isPasswordCorrect = verify(password,user.password)
+        const isPasswordCorrect = verify(password, user.password)
         if (isPasswordCorrect) {
             return done(undefined, user);
         }
         return done(undefined, false, { message: "Invalid email or password." });
-        });
-    }));
+    });
+}));
 
 passport.serializeUser<any, any>((user, done) => {
     done(undefined, user.id);

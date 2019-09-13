@@ -1,16 +1,16 @@
 //General imports
-import {Application} from "express";
+import { Application } from "express";
 import FormatResponse from "../Utils/FormatResponse";
-import {ContactController} from '../Controllers/ContactController'
+import { ContactController } from '../Controllers/ContactController'
 import { UserController } from "../Controllers/UserController";
 import { DonationsController } from "../Controllers/DonationsController";
-import {AuthorizationChecker, AuthorizationCheckerInterface} from '../Middlewares/AuthorizationChecker'
+import { AuthorizationChecker, AuthorizationCheckerInterface } from '../Middlewares/AuthorizationChecker'
 import Validator from '../Middlewares/Validator'
 
 //validators
-import {UserValidator} from '../Models/ValidatorModels/UserValidator'
-import {DonationValidator} from '../Models/ValidatorModels/DonationValidator'
-import {ContactValidator} from '../Models/ValidatorModels/ContactValidator'
+import { UserValidator } from '../Models/ValidatorModels/UserValidator'
+import { DonationValidator } from '../Models/ValidatorModels/DonationValidator'
+import { ContactValidator } from '../Models/ValidatorModels/ContactValidator'
 
 //Models
 import Contact from '../Models/MongooseModels/ContactSchema'
@@ -20,23 +20,23 @@ import RequestInterface from "Interfaces/RequestInterface";
 import ResponseInterface from "Interfaces/ResponseInterface";
 
 
-export class BaseRoutes {     
+export class BaseRoutes {
     public contactController: ContactController = new ContactController();
     public userController: UserController = new UserController();
     public donationsController: DonationsController = new DonationsController();
     public authorizationChecker: AuthorizationCheckerInterface = new AuthorizationChecker();
     public validator: Validator = new Validator();
-    
+
     public routes(app: Application): void {
 
-        app.route('/contact') 
-            .get(this.responseAdditions, this.contactController.getContacts)        
+        app.route('/contact')
+            .get(this.responseAdditions, this.contactController.getContacts)
             .post(this.authorizationChecker.isAuthorized, this.responseAdditions, ContactValidator.post, this.validator.validate, this.contactController.addNewContact)
 
         app.route('/contact/:id').delete(this.authorizationChecker.isAuthorized, this.responseAdditions, this.contactController.deleteContact)
-        app.route('/user') 
-            .get(this.authorizationChecker.isAuthorized, this.responseAdditions, this.userController.getUsers)        
-            .post(this.responseAdditions, UserValidator.post, this.validator.validate ,this.userController.registerUser)
+        app.route('/user')
+            .get(this.authorizationChecker.isAuthorized, this.responseAdditions, this.userController.getUsers)
+            .post(this.responseAdditions, UserValidator.post, this.validator.validate, this.userController.registerUser)
 
         app.route('/login')
             .post(this.responseAdditions, UserValidator.login, this.validator.validate, this.userController.postLogin);
@@ -52,9 +52,9 @@ export class BaseRoutes {
             .delete(this.authorizationChecker.isAuthorized, this.responseAdditions, this.donationsController.deleteDonation)
     }
 
-    private responseAdditions(req: RequestInterface, res: ResponseInterface, next: Function): void{
+    private responseAdditions(req: RequestInterface, res: ResponseInterface, next: Function): void {
         res.handleSuccess = (payload: Object) => {
-            return res.status(200).send(FormatResponse.transform(payload,200))
+            return res.status(200).send(FormatResponse.transform(payload, 200))
         }
         res.handleError = (error: Object) => {
             return res.status(500).send(FormatResponse.transform(error, 500))

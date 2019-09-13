@@ -1,2 +1,2 @@
-export default interface FormatResponseInterface{
+export default interface FormatResponseInterface {
 }

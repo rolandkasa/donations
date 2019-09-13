@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-interface ContactInterface{
+interface ContactInterface {
     firstName: String,
     lastName: String,
     email: String,
@@ -21,13 +21,13 @@ const ContactSchema = new Schema({
         required: 'Enter a last name'
     },
     email: {
-        type: String            
+        type: String
     },
     company: {
-        type: String            
+        type: String
     },
     phone: {
-        type: Number            
+        type: Number
     },
     created_date: {
         type: Date,
@@ -35,18 +35,18 @@ const ContactSchema = new Schema({
     }
 }, {
     toObject: {
-      transform: function (doc, ret) {
-        ret.id = ret._id;
-        delete ret._id;
-        delete ret.__V;
-      }
+        transform: function (doc, ret) {
+            ret.id = ret._id;
+            delete ret._id;
+            delete ret.__V;
+        }
     },
     toJSON: {
-      transform: function (doc, ret) {
-        ret.id = ret._id;
-        delete ret._id;
-        delete ret.__V;
-      }
+        transform: function (doc, ret) {
+            ret.id = ret._id;
+            delete ret._id;
+            delete ret.__V;
+        }
     }
 });
 
