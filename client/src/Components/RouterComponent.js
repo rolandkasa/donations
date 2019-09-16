@@ -8,7 +8,6 @@ import Login from '../Components/LoginComponent'
 import Logout from '../Components/LogoutComponent'
 import Contact from '../Components/ContactComponent'
 import '../index.css';
-// import packageJson from '../../package.json';
 import { Route, BrowserRouter as Router, NavLink } from 'react-router-dom'
 import logo from '../image2vector.svg'
 import { Navbar, Nav } from 'react-bootstrap'
@@ -46,7 +45,6 @@ class RouterComponent extends Component {
           <Route path='/logout' component={Logout} />
           <Route path='/contact' component={Contact} />
         </div>
-        {/* {packageJson.version} */}
       </Router>
     )
   }
