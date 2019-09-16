@@ -4,16 +4,16 @@ import * as moment from 'moment'
 import User from '../Models/MongooseModels/UserSchema'
 
 export interface CronInterface{
-    startDev(): Promise<void>,
-    startProd(): Promise<void>
+    startDev(): void,
+    startProd(): void
 }
 
 export class CronJob implements CronInterface{
-    public async startDev(): Promise<void> {
+    public startDev(): void {
         this.sendMessages()
     }
 
-    public async startProd(): Promise<void> {
+    public startProd(): void {
         this.sendMessages()
     }
 
